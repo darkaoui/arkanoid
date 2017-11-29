@@ -1,6 +1,4 @@
-class Raquette implements BoardObject, Move{
-
+class Raquette extends BoardObject  implements Move{
   public Raquette(){
-
   }
 }
