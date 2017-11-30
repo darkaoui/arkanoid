@@ -8,6 +8,15 @@ import javafx.stage.Stage;
 
 public class GameView extends Application {
 
+	private GameBoard gameModel;
+
+	public GameView(){		
+	}
+
+	public GameView(GameBoard gameModel){
+		this.gameModel = gameModel;
+	}	
+
     @Override
     public void start(Stage primaryStage) {
         Button btn = new Button();
