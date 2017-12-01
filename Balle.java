@@ -15,7 +15,9 @@ class Balle extends BoardObject implements Move{
     this.x = x;
     this.y = y;
     this.rayon = rayon;
-    object = new Circle();
+
+    object = new Circle(this.x, this.y,this.rayon);
+    this.object.setRadius(this.rayon);
   }
 
 	public double getRayon(){
@@ -23,10 +25,11 @@ class Balle extends BoardObject implements Move{
 	}
 
 	public boolean collision(BoardObject object){
-
 	}
 
 	public void move(){
+    this.x += this.xMove;
+    this.y += this.yMove;
 	}
 
 	public void rebond(BoardObject object){
@@ -48,7 +51,6 @@ class Balle extends BoardObject implements Move{
   public Circle dessiner(){
     this.object.setCenterX(this.x);
     this.object.setCenterY(this.y);
-    this.object.setRadius(this.rayon);
     return object;
   }
 }

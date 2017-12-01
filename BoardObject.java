@@ -14,4 +14,6 @@ public abstract class BoardObject{
   public double getY(){
     return y;
   }
+
+  public void setColor(Color);
 }

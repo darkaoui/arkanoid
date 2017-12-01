@@ -4,11 +4,18 @@ public class GameBoard{
 	private Raquette raquette;
 	private Balle balle;
 
+	private int level;
+	private boolean pause;
 
 	public GameBoard(){
-		//initialiser les attributs
+		this.briques  = new ArrayList<Brique>();
+		this.raquette = new Raquette(0,0,0,0);
+		this.balle    = new Balle(0,0,0,0);
+
+		this.level = -1;
+		this.pause =  false;
 	}
-	
+
 	public ArrayList<Brique> getBriques(){
 		return this.briques;
 	}
@@ -19,5 +26,13 @@ public class GameBoard{
 
 	public Balle getBalle(){
 		return this.balle;
+	}
+
+	public int getLevel(){
+		return this.level;
+	}
+
+	public boolean getPause(){
+		return this.pause;
 	}
 }

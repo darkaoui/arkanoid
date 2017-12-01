@@ -7,7 +7,6 @@ class GameController implements EventHandler<Event>{
   private GameBoad gameBoard;
   private GameView gameView;
 	private AnimationTimer animation;
-	private boolean pause;
 
   public GameController(GameBoard gameBoard,GameView gameView){
 		this.gameBoard = gameModel;
@@ -22,15 +21,11 @@ class GameController implements EventHandler<Event>{
 				gameAnimation(time,lastTime);
 			}
 		};
-
-		this.pause = false;
   }
 
 	//initialisation du jeu
-	public void gameInit(String args[]){
-
+	public void gameLaunch(String args[]){
 		//apres toutes les initialisations de base on lanch
-
 		gameView.launch(args);
 	}
 
@@ -45,11 +40,5 @@ class GameController implements EventHandler<Event>{
 
   //En cas d'echec retourne false
 	public boolean chargementNiveau(int niveau){
-
 	}
-
-  public boolean chargementNiveauTest(){
-
-  }
-
 }
