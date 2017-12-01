@@ -14,9 +14,9 @@ public class GameView extends Application {
 
 	private GameBoard gameModel;
 
-	private ArrayList<Button> btnNiveauList;	
+	private ArrayList<Button> btnNiveauList;
 
-	public GameView(){		
+	public GameView(){
 	}
 
 	public GameView(GameBoard gameModel){
@@ -27,7 +27,7 @@ public class GameView extends Application {
 
 	public void view(){
 		//faire la jonctions du modele au object de la vue
-	}	
+	}
 
   @Override
   public void start(Stage primaryStage) {

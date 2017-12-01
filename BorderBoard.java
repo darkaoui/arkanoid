@@ -1,7 +1,9 @@
 public class BorderBoard extends BoardObject{
-	int longueur;
-	int largeur;
-	
+	double longueur;
+	double largeur;
+
+
+
 	public BorderBoard(){
 		//donner des valeurs initiales
 	}
@@ -10,6 +12,4 @@ public class BorderBoard extends BoardObject{
 		this.longueur = longueur;
 		this.largeur  = largeur;
 	}
-
-	
 }

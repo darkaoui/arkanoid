@@ -1,9 +1,12 @@
+import javafx.scence.shape.Circle;
+
 class Balle extends BoardObject implements Move{
-  
+
   private double rayon;
-	
 	private double xMove;
 	private double yMove;
+
+  private Circle object;
 
   public Balle(){
   }
@@ -12,14 +15,15 @@ class Balle extends BoardObject implements Move{
     this.x = x;
     this.y = y;
     this.rayon = rayon;
+    object = new Circle();
   }
 
 	public double getRayon(){
-		
+    return this.rayon;
 	}
 
 	public boolean collision(BoardObject object){
-		
+
 	}
 
 	public void move(){
@@ -33,12 +37,18 @@ class Balle extends BoardObject implements Move{
 		this.yMove = yMove;
 	}
 
-	public int getXMove(){
-		return xMove;
-	}
-	
-	public int getYMove(){
-		return yMove;
+	public double getXMove(){
+		return this.xMove;
 	}
 
+	public double getYMove(){
+		return ths.yMove;
+	}
+
+  public Circle dessiner(){
+    this.object.setCenterX(this.x);
+    this.object.setCenterY(this.y);
+    this.object.setRadius(this.rayon);
+    return object;
+  }
 }

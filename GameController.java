@@ -6,11 +6,8 @@ class GameController implements EventHandler<Event>{
 
   private GameBoad gameBoard;
   private GameView gameView;
-
 	private AnimationTimer animation;
-
 	private boolean pause;
-	private int level;	
 
   public GameController(GameBoard gameBoard,GameView gameView){
 		this.gameBoard = gameModel;
@@ -24,11 +21,9 @@ class GameController implements EventHandler<Event>{
 			public void handle(long time){
 				gameAnimation(time,lastTime);
 			}
-
-		}
+		};
 
 		this.pause = false;
-		this.level = 1;
   }
 
 	//initialisation du jeu
@@ -38,7 +33,7 @@ class GameController implements EventHandler<Event>{
 
 		gameView.launch(args);
 	}
-  
+
 	public void handle(ActionEvent event) {
 		System.out.println("Hello World!");
 		//gerer les directions de la raquette
@@ -47,5 +42,14 @@ class GameController implements EventHandler<Event>{
 	public void gameAnimation(long time, long lastTime){
 		//gerer l'animation du jeu
 	}
+
+  //En cas d'echec retourne false
+	public boolean chargementNiveau(int niveau){
+
+	}
+
+  public boolean chargementNiveauTest(){
+
+  }
 
 }
