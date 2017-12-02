@@ -5,7 +5,6 @@ class Brique extends BoardObject{
 
   private double largeur;
   private double longueur;
-  private Rectangle object;
 
   public Brique(double x,double y,double longueur,double largeur){
     this.x = x;
@@ -14,17 +13,17 @@ class Brique extends BoardObject{
     this.longueur = longueur;
 
     object = new Rectangle();
-    this.object.setWidth(largeur);
+    this.object.setHeigth(largeur);
     this.object.setWidth(longueur);
   }
 
-  public Rectangle dessiner(){
-    this.object.setX(this.x);
-    this.object.setY(this.y);
-    return object;
-  }
+	public void setX(double x){
+		this.x =x;
+		((Rectangle)).setX(x);
+	}
 
-  public void setColor(Color color){
-    this.object.setFill(color);
-  }
+	public void setY(double y){
+		this.y =y;
+		((Rectangle)).setY(y);
+	}
 }

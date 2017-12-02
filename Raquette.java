@@ -11,9 +11,6 @@ public class Raquette extends Brique implements Move{
 		this.y+=yMove;
 	}
 
-	public boolean collision(){
-	}
-
 	public void setMove(double xMove, double yMove){
 		this.xMove = xMove;
 		this.yMove = yMove;
@@ -25,5 +22,8 @@ public class Raquette extends Brique implements Move{
 
 	public double getYMove(){
 		return yMove;
+	}
+
+	public boolean collision(BorderObject object){
 	}
 }

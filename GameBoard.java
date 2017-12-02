@@ -12,7 +12,7 @@ public class GameBoard{
 		this.raquette = new Raquette(0,0,0,0);
 		this.balle    = new Balle(0,0,0,0);
 
-		this.level = -1;
+		this.level =  -1;
 		this.pause =  false;
 	}
 
@@ -35,4 +35,11 @@ public class GameBoard{
 	public boolean getPause(){
 		return this.pause;
 	}
+
+	public void setLevel(int level){
+		this.level = level;
+	}
+
+	public void chargementNiveau(int niveau){
+	}	
 }
