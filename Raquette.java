@@ -1,14 +1,20 @@
-public class Raquette extends Brique implements Move{
+import javafx.scene.shape.Rectangle;
+import javafx.scene.paint.Color;
+
+public class Raquette extends Rectangle implements BoardObject,IMove{
+
+	private double xMove;
+	private double yMove;
 
 	public Raquette(double x, double y, double longueur, double largeur){
-		this.super(x,x,longueur,largeur);
+		super(x,x,largeur,longueur);
 		this.xMove = 0;
 		this.yMove = 0;
   }
 
-	public move(){
-		this.x+=xMove;
-		this.y+=yMove;
+	public void move(){
+		this.setX(this.getX() + xMove);
+		this.setY(this.getY() + yMove);
 	}
 
 	public void setMove(double xMove, double yMove){
@@ -24,6 +30,12 @@ public class Raquette extends Brique implements Move{
 		return yMove;
 	}
 
-	public boolean collision(BorderObject object){
+	public void setColor(Color color){
+		this.setFill(color);
+	}
+
+	public boolean collision(BoardObject object){
+		//A remplir		
+		return true;
 	}
 }

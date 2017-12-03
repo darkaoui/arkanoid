@@ -1,21 +1,23 @@
-import javafx.EventHandler;
-import javafx.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.scene.input.KeyEvent;
 import javafx.animation.AnimationTimer;
 
 class GameController implements EventHandler<Event>{
 
-  private GameBoad gameBoard;
-  private GameView gameView;
+  public GameBoard gameBoard;
+  public GameView gameView;
+	
 	private AnimationTimer animation;
 
-	int nombreDeNiveau;
-
   public GameController(GameBoard gameBoard,GameView gameView){
-		this.gameBoard = gameModel;
+		
+		this.gameBoard = gameBoard;
 		this.gameView  = gameView;
 
-		//ajouter toutes action sur les elements evementiels de la gameView
-		//
+		this.gameView.addActionEventHandler(this);
+		this.gameView.addKeyEventHandler(this);
 
 		this.animation = new AnimationTimer(){
 			long lastTime = System.nanoTime();
@@ -23,19 +25,28 @@ class GameController implements EventHandler<Event>{
 				gameAnimation(time,lastTime);
 			}
 		};
-
-		this.nombreDeNiveau = 0;
   }
 
 	public void gameLaunch(String args[]){
-		//apres toutes les initialisations de base on lanch
 		gameView.launch(args);
 	}
 
-	public void handle(ActionEvent event) {
-		System.out.println("Hello World!");
-		//gerer les directions de la raquette
+	public void handle(Event event){
+
+		if(event instanceof ActionEvent){
+			System.out.println("Hello World!");
+		}else if(event instanceof KeyEvent){
+			System.out.println("hello world! "+((KeyEvent)event).getText());			
+		}
+
   }
+
+	public void controlleButton(String name){
+	}
+
+	public void controlleKey(String name){
+
+	}
 
 	public void gameAnimation(long time, long lastTime){
 		//gerer l'animation du jeu

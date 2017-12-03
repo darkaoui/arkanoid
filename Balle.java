@@ -1,50 +1,45 @@
-import javafx.scence.shape.Circle;
-import javafx.scence.shape.Shape;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Shape;
+import javafx.scene.paint.Color;
 
-class Balle extends BoardObject implements Move{
+class Balle extends Circle implements BoardObject,IMove{
 
-  private double rayon;
-	private double xMove;
+  private double xMove;
 	private double yMove;
 
   public Balle(double x,double y,double rayon){
-		this.x = x;
-    this.y = y;
-    this.rayon = rayon;
 
-    object = new Circle(this.x, this.y,this.rayon);
-    this.object.setRadius(this.rayon);
+		super(x,y,rayon);
 		
 		xMove =0;
 		yMove =0;
   }
 
   public Balle(double x,double y,double rayon, double xMove, double yMove){
-		Balle(x,y,rayon);
+		this(x,y,rayon);
 		xMove = x;
 		yMove = y;
   }
 
-	public double getRayon(){
-    return this.rayon;
-	}
-
 	public void setX(double x){
-		this.x =x;
-		((Cricle)object).setCenterX(this.x);
+		this.setCenterX(x);
 	}
 
-	public void setY(){
-		this.y = y;
-		((Circle))object).setCenterY(this.y);
+	public void setY(double y){
+		this.setCenterY(y);
+	}
+
+	public double getX(){
+		return this.getCenterX();
+	}
+
+	public double getY(){
+		return this.getCenterY();
 	}
 
 	public void move(){
-    this.x += this.xMove;
-    this.y += this.yMove;
-	}
-
-	public void rebond(BoardObject object){
+    this.setX(this.getX() + this.xMove);
+    this.setY(this.getY() + this.yMove);
 	}
 
 	public void setMove(double xMove, double yMove){
@@ -57,9 +52,21 @@ class Balle extends BoardObject implements Move{
 	}
 
 	public double getYMove(){
-		return ths.yMove;
+		return this.yMove;
+	}
+
+	private double rayon(){
+    return this.getRadius();
+	}
+
+	public void setColor(Color color){
+		this.setFill(color);
+	}
+
+	public void rebond(BoardObject object){
 	}
 
 	public boolean collision(BoardObject object){
+		return true;
 	}
 }

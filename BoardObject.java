@@ -1,33 +1,11 @@
-import javafx.scence.shape.Shape;
+import javafx.scene.paint.Color;
 
-public abstract class BoardObject{
-  
-	private double x;
-  private double y;
+public interface BoardObject{
+	public void setColor(Color color);
 
-	private Shape object;
-
-	public void setX();
-	public void setY();
-
-	public void setPosition(double x,double y){
-		this.setX(x);
-		this.setY(y);		
-	}
-
-  public double getX(){
-    return x;
-  }
-
-  public double getY(){
-    return y;
-  }
-
-	public Shape drawableObject(){
-		return object;
-	}
-
-	public void  setColor(Color color){
-		this.object.setFill(color);
-	}
+	public double getX();
+	public double getY();
+	
+	public void setX(double x);
+	public void setY(double y);
 }

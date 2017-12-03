@@ -1,6 +1,6 @@
 public interface IMove{
 	public void move();
-	public boolean collision(BoardOject object);
+	public boolean collision(BoardObject object);
 
   public void setMove(double xMove, double yMove);
 	
