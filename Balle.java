@@ -13,6 +13,8 @@ class Balle extends Circle implements BoardObject,IMove{
 		
 		xMove =0;
 		yMove =0;
+    
+    this.setColor(Color.ROYALBLUE);
   }
 
   public Balle(double x,double y,double rayon, double xMove, double yMove){
@@ -57,7 +59,7 @@ class Balle extends Circle implements BoardObject,IMove{
 
 	private double rayon(){
     return this.getRadius();
-	}
+	} 
 
 	public void setColor(Color color){
 		this.setFill(color);

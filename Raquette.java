@@ -3,31 +3,20 @@ import javafx.scene.paint.Color;
 
 public class Raquette extends Rectangle implements BoardObject,IMove{
 
-	private double xMove;
-	private double yMove;
+	private double moveConstant;
 
-	public Raquette(double x, double y, double longueur, double largeur){
-		super(x,x,largeur,longueur);
-		this.xMove = 0;
-		this.yMove = 0;
-  }
-
-	public void move(){
-		this.setX(this.getX() + xMove);
-		this.setY(this.getY() + yMove);
+	public Raquette(double x, double y, double width, double height){
+		super(x,x,width,height);
+		this.moveConstant = 1.0;
+		this.setColor(Color.BLUE);
 	}
 
-	public void setMove(double xMove, double yMove){
-		this.xMove = xMove;
-		this.yMove = yMove;
+	public void goLeft(){
+		this.setX(this.getX()-this.moveConstant);
 	}
 
-	public double getXMove(){
-		return xMove;
-	}
-
-	public double getYMove(){
-		return yMove;
+	public void goRight(){
+		this.setX(this.getX()+this.moveConstant);
 	}
 
 	public void setColor(Color color){

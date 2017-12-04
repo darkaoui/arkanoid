@@ -1,14 +1,15 @@
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-public class Cadre extends Rectangle implements BoardObject{
+class Cadre extends Rectangle implements BoardObject{
 
-	public Cadre(double x,double y,double longueur,double largeur){
-		super(x,y,largeur,longueur);
-	}
+  public Cadre(double x,double y,double width,double height){
+    super(x,y,width,height);
+		setColor(Color.BLACK);
+  }
 
 	public void setColor(Color color){
-		this.setStroke(color);
 		this.setFill(Color.TRANSPARENT);
+		this.setStroke(color);
 	}
 }

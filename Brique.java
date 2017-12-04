@@ -3,8 +3,8 @@ import javafx.scene.shape.Rectangle;
 
 class Brique extends Rectangle implements BoardObject{
 
-  public Brique(double x,double y,double longueur,double largeur){
-    super(x,y,largeur,longueur);
+  public Brique(double x,double y,double width,double height){
+    super(x,y,width,height);
   }
 
 	public void setColor(Color color){
