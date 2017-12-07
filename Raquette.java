@@ -24,7 +24,7 @@ public class Raquette extends Rectangle implements BoardObject,IMove{
 	}
 
 	public boolean collision(BoardObject object){
-		//A remplir		
+		//A remplire	
 		return true;
 	}
 }

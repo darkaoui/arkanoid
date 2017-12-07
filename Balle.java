@@ -7,6 +7,8 @@ class Balle extends Circle implements BoardObject,IMove{
   private double xMove;
 	private double yMove;
 
+  private boolean destroyed; // balle percee
+
   public Balle(double x,double y,double rayon){
 
 		super(x,y,rayon);
@@ -15,6 +17,7 @@ class Balle extends Circle implements BoardObject,IMove{
 		yMove =0;
     
     this.setColor(Color.ROYALBLUE);
+    this.destroyed = false;
   }
 
   public Balle(double x,double y,double rayon, double xMove, double yMove){
@@ -57,6 +60,10 @@ class Balle extends Circle implements BoardObject,IMove{
 		return this.yMove;
 	}
 
+  public boolean destroyed(){
+		return this.destroyed;
+  }
+
 	private double rayon(){
     return this.getRadius();
 	} 
@@ -66,9 +73,60 @@ class Balle extends Circle implements BoardObject,IMove{
 	}
 
 	public void rebond(BoardObject object){
+    if(object instanceof Cadre){
+      double x = ((Cadre)object).getX();
+      double y = ((Cadre)object).getY();
+      double w = ((Cadre)object).getWidth();
+      double h = ((Cadre)object).getHeight();
+ 
+       if( x>=(this.getX()+rayon()) || (x+w)<=(this.getX()+rayon()) )
+         this.xMove = xMove*(-1);
+
+       if( y>=(this.getY()+rayon()) || (y+h)<=(this.getY()+rayon())  )
+         this.yMove = yMove*(-1);
+     }
+
+      //regere pour la balle percee
+
+     //la suite des rebonds
 	}
 
 	public boolean collision(BoardObject object){
-		return true;
+    
+    if((object instanceof Cadre)){
+      double x = ((Cadre)object).getX();
+      double y = ((Cadre)object).getY();
+      double w = ((Cadre)object).getWidth();
+      double h = ((Cadre)object).getHeight();
+ 
+       if( x>=(this.getX()+rayon())  || y>=(this.getY()+rayon()) || 
+        (x+w)<=(this.getX()+rayon()) || (y+h)<=(this.getY()+rayon()) )
+         return true;
+       else
+         return false;
+    }
+      
+
+    if(object instanceof Raquette){
+      return false;
+		}
+
+    if(object instanceof Brique){
+      return false;
+    }
+
+    if(object instanceof BriqueDur){
+      return false;
+    }
+
+		return false;
 	}
+
+  private boolean collisionBrique(double x,double y,double w, double h){
+    if( x<=(this.getX()+rayon())    && y<=(this.getY()+rayon()) && 
+       (x+w)>=(this.getX()+rayon()) && (y+h)>=(this.getY()+rayon()) )
+      return true;
+    else
+      return false;
+  }
 }

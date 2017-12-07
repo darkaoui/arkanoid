@@ -4,12 +4,12 @@ import javafx.scene.shape.Rectangle;
 class BriqueDur extends Brique implements BoardObject{
 	private int resistance;
 	
-	public Brique(double x,double y,double width,double height, int resistance){
+	public BriqueDur(double x,double y,double width,double height, int resistance){
     super(x,y,width,height);
 		this.resistance = resistance;
   }
 
-	public void affaiblir){
+	public void affaiblir(){
 		this.resistance--;
 	}
 
