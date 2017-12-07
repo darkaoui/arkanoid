@@ -8,30 +8,31 @@ public class ArkanoidBoard extends Pane{
 
 	private int niveauActuel;
 	private int nombreDeNiveau;
-	
+
   private boolean looser;
-	
+
 	public ArkanoidBoard(){
-		
+
 		objects = new ArrayList<>();
 
 		this.objects.add(new Cadre(0,0,300,400));
 		this.objects.add(new Raquette(100,100,50,10));
-		this.objects.add(new Balle(50,50,20));
+		this.objects.add(new Balle(50,50,8));
+
+		this.setX(0);
+		this.setY(0);
 
 		for(int i=0; i<this.objects.size();i++)
 			this.getChildren().add((Shape)this.objects.get(i));
 
-		this.objects.get(0).setX(0);
-		this.objects.get(0).setY(0);
-
 		this.niveauActuel   = 0;
 		this.nombreDeNiveau = nombreDeNiveau();
-    
+
     this.looser = false;
 	}
 
 	public void setLooser(boolean looser){
+		//mis a true si la balle est percee
     this.looser = looser;
   }
 
@@ -48,7 +49,7 @@ public class ArkanoidBoard extends Pane{
 	}
 
 	public Balle getBalle(){
-		return (Balle)this.objects.get(2);	
+		return (Balle)this.objects.get(2);
 	}
 
 	public Cadre getCadre(){
@@ -61,8 +62,7 @@ public class ArkanoidBoard extends Pane{
 
 	public void setX(double x){
 		this.objects.get(0).setX(x);
-		this.objects.get(0).setX(x);
-		
+
 		//Adapter la position des objects au cadre
 		for(int i=1; i<this.objects.size();i++)
 			this.objects.get(i).setX(this.objects.get(i).getX()+x);
@@ -70,10 +70,9 @@ public class ArkanoidBoard extends Pane{
 
 	public void setY(double y){
 		this.objects.get(0).setY(y);
-		this.objects.get(0).setY(y);
 
 		for(int i=1; i<this.objects.size();i++)
-			this.objects.get(i).setY(this.objects.get(i).getY()+y);		
+			this.objects.get(i).setY(this.objects.get(i).getY()+y);
 	}
 
 	public void setPosition(double x, double y){
@@ -90,11 +89,11 @@ public class ArkanoidBoard extends Pane{
 	}
 
 	public boolean endOfLevel(){
-    return true;
+		//si la balle est percee ou les briques sont fini
+    return false;
 	}
 
 	public boolean chargementDeNiveau(int niveau){
-
 		//On charge le niveau si c'est possible on vide et on ajoute toutes les briques
 		return true;
 	}

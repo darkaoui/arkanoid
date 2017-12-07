@@ -7,7 +7,9 @@ class ArkanoidBoardController{
   }
 
 	public void arkanoidAnimation(long time, long lastTime){
-		//gerer l'animation du jeu
+    this.arkanoidBoard.getBalle().move(time-lastTime);
+    this.arkanoidBoard.getBalle().collision(this.arkanoidBoard.getCadre());
+    //gerer l'animation du jeu
 		//gestion des colision
 		//gestion des rebond
 	}
@@ -28,7 +30,4 @@ class ArkanoidBoardController{
 			this.arkanoidBoard.getRaquette().goLeft();
 	}
 
-	public void balleMove(){
-		this.arkanoidBoard.getBalle().move();
-	}
 }

@@ -1,7 +1,7 @@
 import javafx.scene.shape.Rectangle;
 import javafx.scene.paint.Color;
 
-public class Raquette extends Rectangle implements BoardObject,IMove{
+public class Raquette extends Rectangle implements BoardObject{
 
 	private double moveConstant;
 
@@ -24,7 +24,7 @@ public class Raquette extends Rectangle implements BoardObject,IMove{
 	}
 
 	public boolean collision(BoardObject object){
-		//A remplire	
+		//A remplire
 		return true;
 	}
 }
