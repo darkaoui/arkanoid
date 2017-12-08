@@ -1,7 +1,7 @@
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-class Cadre extends Rectangle implements BoardObject{
+class Cadre extends Rectangle{
 
     public Cadre(double x,double y,double width,double height){
         super(x,y,width,height);

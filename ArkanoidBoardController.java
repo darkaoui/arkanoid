@@ -1,79 +1,89 @@
+import javafx.scene.shape.Rectangle;
+
 class ArkanoidBoardController{
 
-  public ArkanoidBoard arkanoidBoard;
+    public ArkanoidBoard arkanoidBoard;
 
-  public ArkanoidBoardController(ArkanoidBoard arkanoidBoard){
-    this.arkanoidBoard = arkanoidBoard;
-  }
+    public ArkanoidBoardController(ArkanoidBoard arkanoidBoard){
+        this.arkanoidBoard = arkanoidBoard;
+    }
 
     public void arkanoidAnimation(long time, long lastTime){
+
+        double lapstime = time-lastTime;
+        Balle balle = this.arkanoidBoard.getBalle();
+
+        double xB = balle.getX()+balle.getXMove()*lapstime;
+        double yB = balle.getY()+balle.getYMove()*lapstime;
+
         //gerer l'animation du jeu
         //gestion des colision
         //gestion des rebond
+
+        if(this.collision(this.arkanoidBoard.getBalle(),this.arkanoidBoard.getCadre(),xB,yB))
+            return;
+
+        balle.setX(xB);
+        balle.setY(yB);
     }
 
     public boolean loadingLevel(int level){
-            return this.arkanoidBoard.chargementDeNiveau(level);
+        return this.arkanoidBoard.chargementDeNiveau(level);
     }
 
     public void pushLeftKey(){
-            this.arkanoidBoard.getRaquette().goLeft();
-            if(this.arkanoidBoard.getRaquette().collision(this.arkanoidBoard.getCadre()))
-                    this.arkanoidBoard.getRaquette().goRight();
+        double x = this.arkanoidBoard.getRaquette().getX();
+        x-= this.arkanoidBoard.getRaquette().getMoveConstant();
+
+        if(x > this.arkanoidBoard.getCadre().getX())
+            this.arkanoidBoard.getRaquette().setX(x);
     }
 
     public void pushRightKey(){
-            this.arkanoidBoard.getRaquette().goRight();
-            if(this.arkanoidBoard.getRaquette().collision(this.arkanoidBoard.getCadre()))
-                    this.arkanoidBoard.getRaquette().goLeft();
+        double x = this.arkanoidBoard.getRaquette().getX();
+        double w = this.arkanoidBoard.getRaquette().getWidth();
+        x+= this.arkanoidBoard.getRaquette().getMoveConstant();
+
+        if((x+w) > this.arkanoidBoard.getCadre().getX())
+            this.arkanoidBoard.getRaquette().setX(x);
     }
-    
-    private boolean collision(Balle balle, BoardObject object){
+
+    private boolean collision(Balle balle, Rectangle object, double xB, double yB){
+
+        double x = (object).getX();
+        double y = (object).getY();
+        double w = (object).getWidth();
+        double h = (object).getHeight();
 
         if(object instanceof Cadre){
 
-            double x = ((Cadre)object).getX();
-            double y = ((Cadre)object).getY();
-            double w = ((Cadre)object).getWidth();
-            double h = ((Cadre)object).getHeight();
-            
-            System.out.println(x+" "+(this.getX()+rayon()));
-
-            if( x>=(this.getX()+rayon()) || (x+w)<=(this.getX()+rayon()) ){
-            this.xMove = -this.xMove;
-            this.move();
-            return true;
+            if(xB+balle.getRadius() <= x || xB >= (x+w)){
+                balle.setXMove(-balle.getXMove());
+                return true;
             }
 
-            if( y>=(this.getY()+rayon()) || (y+h)<=(this.getY()+rayon())  ){
-            this.yMove = -this.yMove;
-            this.move();
-            
-            return true;
-        }
-    }
+            if(yB+balle.getRadius() <= y || yB >= (y+h)){
+                balle.setYMove(-balle.getYMove());
+                return true;
+            }
 
-    //Ajouter quand la balle touches le fond elle est detruite
-
-    if(object instanceof Raquette){
-        return false;
-    }
-
-
-    if(object instanceof Brique){
-        return false;
-    }
-
-    return false;
-    }
-
-    //redefinir
-    private boolean collisionBrique(double x,double y,double w, double h){
-        if( x<=(this.getX()+rayon())    && y<=(this.getY()+rayon()) &&
-        (x+w)>=(this.getX()+rayon()) && (y+h)>=(this.getY()+rayon()) )
-            return true;
-        else
             return false;
-    }
+        }
 
+        //Ajouter quand la balle touches le fond elle est detruite
+
+        if(object instanceof Raquette){
+            return false;
+        }
+
+        if(object instanceof Brique){
+            return false;
+        }
+
+        if(object instanceof Cadre){
+            return false;
+        }
+
+        return false;
+    }
 }
