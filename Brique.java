@@ -1,10 +1,13 @@
-class Brique extends BoardObject{
-  
-  private double largeur;
-  private double longueur;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 
-	private int resistance;
+class Brique extends Rectangle implements BoardObject{
 
-  public Brique(double x,double y,double largeur,double longueur, int resistance){
-  }
+    public Brique(double x,double y,double width,double height){
+        super(x,y,width,height);
+    }
+
+    public void setColor(Color color){
+        this.setFill(color);
+    }
 }

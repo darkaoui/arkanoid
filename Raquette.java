@@ -1,47 +1,25 @@
-public class Raquette extends BoardObject  implements Move{
+import javafx.scene.shape.Rectangle;
+import javafx.scene.paint.Color;
 
-	double longueur;
-	double largeur;
+public class Raquette extends Rectangle implements BoardObject{
 
-	double xMove;
-	double yMove;
-  
-	public Raquette(int x, int y, int longueur, int largeur){
-		
-		this.longueur = x;
-		this.largeur  = y;
+	private double moveConstant;
 
-		this.xMove = 0;
-		this.yMove = 0;
-  }
-	
-	public move(){
-		this.x+=xMove;
-		this.y+=yMove;
+	public Raquette(double x, double y, double width, double height){
+		super(x,x,width,height);
+		this.moveConstant = 1.0;
+		this.setColor(Color.BLUE);
 	}
 
-	public boolean collision(){
-		
+	public void goLeft(){
+		this.setX(this.getX()-this.moveConstant);
 	}
 
-	public void setMove(double xMove, double yMove){
-		this.xMove = xMove;
-		this.yMove = yMove;
+	public void goRight(){
+		this.setX(this.getX()+this.moveConstant);
 	}
 
-	public double getX(){
-		return this.x;
-	}
-
-	public double getY(){
-		return this.y;
-	}
-
-	public double getXMove(){
-		return xMove;
-	}
-	
-	public double getYMove(){
-		return yMove;
+	public void setColor(Color color){
+		this.setFill(color);
 	}
 }
