@@ -22,9 +22,4 @@ public class Raquette extends Rectangle implements BoardObject{
 	public void setColor(Color color){
 		this.setFill(color);
 	}
-
-	public boolean collision(BoardObject object){
-		//A remplire
-		return true;
-	}
 }

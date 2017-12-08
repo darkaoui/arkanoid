@@ -4,103 +4,152 @@ import javafx.scene.shape.Shape;
 
 public class ArkanoidBoard extends Pane{
 
-	private ArrayList<BoardObject> objects;
+	private ArrayList<Brique> briques;
+	
+	private Raquette raquette;
+	private Balle    balle;
+	private Cadre    cadre;
 
 	private int niveauActuel;
 	private int nombreDeNiveau;
 
-  private boolean looser;
+        private boolean looser;
+        
+        private Niveau chargeurNiveau;
 
 	public ArkanoidBoard(){
+	
+            chargeurNiveau = new Niveau();
 
-		objects = new ArrayList<>();
+            briques = new ArrayList<>();
+            
 
-		this.objects.add(new Cadre(0,0,300,400));
-		this.objects.add(new Raquette(100,100,50,10));
-		this.objects.add(new Balle(50,50,8));
+            this.cadre    =  new Cadre(0,0,300,400);
+            this.raquette =  new Raquette(100,100,50,10);
+            this.balle    =  new Balle(50,50,8);
 
-		this.setX(0);
-		this.setY(0);
+            this.setX(0);
+            this.setY(0);
 
-		for(int i=0; i<this.objects.size();i++)
-			this.getChildren().add((Shape)this.objects.get(i));
-
-		this.niveauActuel   = 0;
-		this.nombreDeNiveau = nombreDeNiveau();
-
-    this.looser = false;
+            this.niveauActuel   = 0;
+            this.nombreDeNiveau = nombreDeNiveau();
+            this.looser = false;
+            
+            this.setVisible();
+            
+            this.chargementDeNiveau(1);
 	}
 
 	public void setLooser(boolean looser){
-		//mis a true si la balle est percee
-    this.looser = looser;
-  }
+            //mis a true si la balle est percee
+            this.looser = looser;
+        }
 
-  public boolean getLooser(){
-    return this.looser;
-  }
+        public boolean getLooser(){
+            return this.looser;
+        }
 
-	public ArrayList<BoardObject> getObjects(){
-		return this.objects;
+	public ArrayList<Brique> getBriques(){
+		return this.briques;
 	}
 
 	public Raquette getRaquette(){
-		return (Raquette)this.objects.get(1);
+		return this.raquette;
 	}
 
 	public Balle getBalle(){
-		return (Balle)this.objects.get(2);
+		return this.balle;
 	}
 
 	public Cadre getCadre(){
-		return (Cadre)this.objects.get(0);
+		return this.cadre;
 	}
 
 	public void removeBrique(Brique brique){
-		this.objects.remove(brique);
+            this.briques.remove(brique);
+            this.getChildren().remove(brique);
 	}
 
 	public void setX(double x){
-		this.objects.get(0).setX(x);
-
-		//Adapter la position des objects au cadre
-		for(int i=1; i<this.objects.size();i++)
-			this.objects.get(i).setX(this.objects.get(i).getX()+x);
+	
+		this.cadre.setX(x);
+		this.balle.setX(this.balle.getX()+x);
+		this.raquette.setX(this.raquette.getX()+x);
+		
+		for(int i=1; i<this.briques.size();i++)
+                    this.briques.get(i).setX(this.briques.get(i).getX()+x);
 	}
 
 	public void setY(double y){
-		this.objects.get(0).setY(y);
+	
+            this.cadre.setY(y);
+            this.balle.setY(this.balle.getY()+y);
+            this.raquette.setY(this.raquette.getY()+y);
 
-		for(int i=1; i<this.objects.size();i++)
-			this.objects.get(i).setY(this.objects.get(i).getY()+y);
+            for(int i=1; i<this.briques.size();i++)
+                this.briques.get(i).setY(this.briques.get(i).getY()+y);
+	
 	}
 
 	public void setPosition(double x, double y){
-		this.setX(x);
-		this.setY(y);
+            this.setX(x);
+            this.setY(y);
 	}
+	
 
 	public int getNiveauActuel(){
 		return this.niveauActuel;
 	}
 
 	public int getNombreDeNiveau(){
-		return this.nombreDeNiveau;
+            return this.nombreDeNiveau;
 	}
+	
 
 	public boolean endOfLevel(){
-		//si la balle est percee ou les briques sont fini
-    return false;
+            //si la balle est percee ou les briques sont fini
+            return false;
 	}
 
 	public boolean chargementDeNiveau(int niveau){
-		//On charge le niveau si c'est possible on vide et on ajoute toutes les briques
-		return true;
+            
+            this.getChildren().remove(this.balle);
+            this.getChildren().removeAll(this.briques);
+            this.briques.clear();
+            
+            
+            //position initiale de la raquette
+            this.raquette.setX((this.raquette.getWidth()/2)+this.this.cadre.getWidth()/2);
+            
+            //position initiale de la balle
+            this.balle.setX((this.raquette.getX()+this.raquette.getWidth())/2);
+            this.balle.setY(this.raquette.getY()-this.balle.getRadius());
+            
+            
+            if(!chargeurNiveau.chargement("niveau"+niveau+".txt"))
+                return false;
+                
+            this.briques.addAll(chargeurNiveau.getBriques());
+                
+            for(int i=1; i<this.briques.size();i++){
+                
+                double x = this.cadre.getX();
+                double y = this.cadre.getY();
+                
+                this.briques.get(i).setY(this.briques().get(i).getY()+y);
+                this.briques.get(i).setX(this.briques().get(i).getX()+x);
+            }
+            
+            this.getChildren().addAll(briques);
+            this.getChildren().add(this.balle);
+            return true;
 	}
 
 	private int nombreDeNiveau(){
-		//voir le nombre de fichiers
-		return 10;
+            //voir le nombre de fichiers
+            //On utilise Niveau
+            
+            return 10;
 	}
 
 }

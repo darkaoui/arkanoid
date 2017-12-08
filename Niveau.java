@@ -3,16 +3,17 @@ import javafx.scene.paint.*;
 
 public class Niveau {
 
-	private int[] taille; //[largeur, longueur]
-	//private ArrayList<Brique> briques; //liste des coordonnées et couleurs des briques
+	private int[] taille; //[largeur, longueur] //On a pas besoin, on verifie juste si c'est 300x400
+	
+	private ArrayList<Brique> briques; //liste des coordonnées et couleurs des briques
 
 	public Niveau(){
-		taille=new int[2];
-	//	briques=new ArrayList();
-
+		taille=new int[2]; 
+		briques=new ArrayList();
 	}
 
 	public boolean chargement(String path){ //chemin du fichier niveau.txt
+            this.briques.clear();
 		try{
 			InputStream ips= new FileInputStream(path);
 			InputStreamReader ipsr= new InputStreamReader(ips);
@@ -47,11 +48,11 @@ public class Niveau {
 					if(x1>x2 || y1>y2){
 						return false;
 					}
-	//				Brique b=new Brique(x1,y1,Math.abs(x1-x2),Math.abs(y1-y2));
+					Brique b=new Brique(x1,y1,Math.abs(x1-x2),Math.abs(y1-y2));
 					Color color = Color.valueOf(t[2]);
 					System.out.println("coordonnées NW : ("+x1+", "+y1+") ; coordonnées SE : ("+x2+", "+y2+") ; couleur : "+color.toString());
-	//				b.setColor(color);
-	//				briques.add(b);
+					b.setColor(color);
+					briques.add(b);
 				}
 				catch(NumberFormatException e){
 					System.out.println("les coordonnées ne sont pas bonnes !");
@@ -66,10 +67,12 @@ public class Niveau {
 		}
 		return true;
 	}
+	
+	public ArrayList<Brique> getBriques(){
+            return this.briques;
+	}
 
-	public static void main(String[]args){
-		Niveau n = new Niveau();
-		System.out.println(n.chargement("niveau1.txt"));
+	public int nombreDeFichierNiveau(){
 	}
 
 }
