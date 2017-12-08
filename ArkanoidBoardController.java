@@ -1,34 +1,55 @@
 import javafx.scene.shape.Rectangle;
+import javafx.animation.AnimationTimer;
 
 class ArkanoidBoardController{
 
     public ArkanoidBoard arkanoidBoard;
+    private long lapstime;
+    private AnimationTimer animation;
 
-    public ArkanoidBoardController(ArkanoidBoard arkanoidBoard){
+    public ArkanoidBoardController(ArkanoidBoard arkanoidBoard, AnimationTimer animation){
         this.arkanoidBoard = arkanoidBoard;
+        this.animation     = animation;
     }
 
     public void arkanoidAnimation(long time, long lastTime){
 
-        double lapstime = time-lastTime;
-        Balle balle = this.arkanoidBoard.getBalle();
+        long lapstime = time-lastTime;
 
+        Balle balle = this.arkanoidBoard.getBalle();
         double xB = balle.getX()+balle.getXMove()*lapstime;
         double yB = balle.getY()+balle.getYMove()*lapstime;
 
-        //gerer l'animation du jeu
-        //gestion des colision
-        //gestion des rebond
-
-        if(this.collision(this.arkanoidBoard.getBalle(),this.arkanoidBoard.getCadre(),xB,yB))
+        if(this.collision(this.arkanoidBoard.getBalle(),this.arkanoidBoard.getCadre(),xB,yB)){
+            //verifier si le ballle a explose
             return;
+        }
+
+        //Verifier si on casse Une brique pour le disparaitre
+        //Au cas ou toutes les briques sont brisee fin du jeux
+
+        //Verifier
 
         balle.setX(xB);
         balle.setY(yB);
     }
 
+    public void run(){
+        this.arkanoidBoard.setRunning(true);
+        this.animation.start();
+    }
+
+    public void stop(){
+        this.arkanoidBoard.setRunning(false);
+        this.animation.stop();
+    }
+
     public boolean loadingLevel(int level){
-        return this.arkanoidBoard.chargementDeNiveau(level);
+        if(!this.arkanoidBoard.chargementDeNiveau(level))
+            return false;
+
+        this.arkanoidBoard.setNiveauActuel(level);
+        return false;
     }
 
     public void pushLeftKey(){
@@ -57,12 +78,12 @@ class ArkanoidBoardController{
 
         if(object instanceof Cadre){
 
-            if(xB+balle.getRadius() <= x || xB >= (x+w)){
+            if(xB-balle.getRadius() <= x || xB+balle.getRadius() >= (x+w)){
                 balle.setXMove(-balle.getXMove());
                 return true;
             }
 
-            if(yB+balle.getRadius() <= y || yB >= (y+h)){
+            if(yB-balle.getRadius() <= y || yB+balle.getRadius() >= (y+h)){
                 balle.setYMove(-balle.getYMove());
                 return true;
             }

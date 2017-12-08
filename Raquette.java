@@ -6,9 +6,9 @@ public class Raquette extends Rectangle{
 	private double moveConstant;
 
 	public Raquette(double x, double y, double width, double height){
-		super(x,x,width,height);
-		this.moveConstant = 1.0;
-		this.setFill(Color.BLUE);
+		super(x,y,width,height);
+		this.moveConstant = 5.0;
+		this.setFill(Color.BLACK);
 	}
 
 	public double getMoveConstant(){

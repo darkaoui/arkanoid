@@ -14,7 +14,7 @@ class Balle extends Circle {
 
     this.setMove(0,0);
 
-    this.setColor(Color.ROYALBLUE);
+    this.setColor(Color.BLACK);
     this.destroyed = false;
 
   }

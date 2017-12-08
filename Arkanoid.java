@@ -23,23 +23,22 @@ public class Arkanoid extends Application {
     private Text messageText;
     private MyAnimationTimer animation;
 
-    private boolean pause;
     private boolean gameBlocked;
 
     private ArrayList<Button> levelButtonList;
 
     public Arkanoid(){
 
+        this.animation = new MyAnimationTimer();
+
         this.arkanoidBoard           = new ArkanoidBoard();
-        this.arkanoidBoardController = new ArkanoidBoardController(arkanoidBoard);
+        this.arkanoidBoardController = new ArkanoidBoardController(arkanoidBoard,animation);
 
         messageText = new Text(10,0,"push S to Start Game");
 
-        this.pause       = true;
         this.gameBlocked = false;
 
         this.levelButtonList = new ArrayList();
-        this.animation = new MyAnimationTimer();
     }
 
     @Override
@@ -49,7 +48,7 @@ public class Arkanoid extends Application {
         Pane gauche=new VBox();
         Pane haut=new Pane();
 
-        MenuBar menubar=new MenuBar(new Menu("Game"));
+        MenuBar menubar = new MenuBar(new Menu("Game"));
         haut.getChildren().add(menubar);
 
         gauche.getChildren().add(new Text(2,0,"Levels"));
@@ -64,7 +63,7 @@ public class Arkanoid extends Application {
 
         bas.getChildren().add(messageText);
 
-        this.arkanoidBoard.setPosition(5,5);
+        this.arkanoidBoard.setPosition(20,20);
         BorderPane bpane = new BorderPane();
         bpane.setCenter(arkanoidBoard);
         bpane.setBottom(bas);
@@ -75,21 +74,15 @@ public class Arkanoid extends Application {
 
         scene.setOnKeyPressed(new EventHandler<KeyEvent>(){
             public void handle(KeyEvent e){
-                if(gameBlocked)
-                return;
-
-                if(e.getCode() == KeyCode.LEFT && pause != true)
-                arkanoidBoardController.pushLeftKey();
-                else if(e.getCode() == KeyCode.RIGHT && pause != true)
-                arkanoidBoardController.pushRightKey();
+                if(e.getCode() == KeyCode.LEFT && arkanoidBoard.getRunning())
+                    arkanoidBoardController.pushLeftKey();
+                else if(e.getCode() == KeyCode.RIGHT && arkanoidBoard.getRunning())
+                    arkanoidBoardController.pushRightKey();
                 else if(e.getCode() == KeyCode.R || e.getCode() == KeyCode.S){
-                    animation.lastTime = System.nanoTime();
-                    animation.start();
-                    pause = false;
+                    arkanoidBoardController.run();
                     messageText.setText("Level "+arkanoidBoard.getNiveauActuel());
                 }else if(e.getCode() == KeyCode.P){
-                    animation.stop();
-                    pause = true;
+                    arkanoidBoardController.stop();
                     messageText.setText("Game in Pause\nPress P to resume");
                 }else if(e.getCode() == KeyCode.ESCAPE){
                     //Quitter l'application
@@ -105,16 +98,19 @@ public class Arkanoid extends Application {
     class MyAnimationTimer extends AnimationTimer{
         public long lastTime = System.nanoTime();
         public void handle(long time){
+
             System.out.println(time-lastTime);
 
             if(arkanoidBoard.endOfLevel()){
-                gameBlocked   = true;
                 if(arkanoidBoard.getLooser())
-                messageText.setText("Vous avez perdu ! Level "+arkanoidBoard.getNiveauActuel());
+                    messageText.setText("Vous avez perdu ! Level "+arkanoidBoard.getNiveauActuel());
                 else
-                messageText.setText("Vous avez gagne ! Level "+arkanoidBoard.getNiveauActuel());
-                this.stop();
+                    messageText.setText("Vous avez gagne ! Level "+arkanoidBoard.getNiveauActuel());
             }
+
+            if(!arkanoidBoard.getRunning())
+                this.stop();
+
             arkanoidBoardController.arkanoidAnimation(time,lastTime);
             lastTime=time;
         }
@@ -126,10 +122,8 @@ public class Arkanoid extends Application {
                 if(e.getSource() == levelButtonList.get(i)){
                     animation.stop();
                     if(arkanoidBoardController.loadingLevel(i+1)){
-                        gameBlocked = false;
                         messageText.setText("push S to Start Game");
                     }else{
-                        gameBlocked = true;
                         messageText.setText("unable to Load");
                     }
                 }
