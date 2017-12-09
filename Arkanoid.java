@@ -23,26 +23,17 @@ public class Arkanoid extends Application {
     private Text messageText;
     private MyAnimationTimer animation;
 
-    private boolean gameBlocked;
-
     private ArrayList<Button> levelButtonList;
 
-    public Arkanoid(){
-
-        this.animation = new MyAnimationTimer();
-
-        this.arkanoidBoard           = new ArkanoidBoard();
-        this.arkanoidBoardController = new ArkanoidBoardController(arkanoidBoard,animation);
-
-        messageText = new Text(10,0,"push S to Start Game");
-
-        this.gameBlocked = false;
-
-        this.levelButtonList = new ArrayList();
-    }
 
     @Override
     public void start(Stage stage) {
+
+	this.arkanoidBoard           = new ArkanoidBoard();
+        this.arkanoidBoardController = new ArkanoidBoardController(arkanoidBoard);
+
+        messageText = new Text(10,0,"push S to Start Game");
+        this.levelButtonList = new ArrayList();
 
         Pane bas=new Pane();
         Pane gauche=new VBox();
@@ -73,43 +64,58 @@ public class Arkanoid extends Application {
         Scene scene = new Scene(bpane,500,500);
 
         scene.setOnKeyPressed(new EventHandler<KeyEvent>(){
-            public void handle(KeyEvent e){
-                if(e.getCode() == KeyCode.LEFT && arkanoidBoard.getRunning())
+	     public void handle(KeyEvent e) {
+		
+                if(e.getCode() == KeyCode.LEFT && arkanoidBoard.getRunning() == true)
                     arkanoidBoardController.pushLeftKey();
-                else if(e.getCode() == KeyCode.RIGHT && arkanoidBoard.getRunning())
+                else if(e.getCode() == KeyCode.RIGHT && arkanoidBoard.getRunning() == true)
                     arkanoidBoardController.pushRightKey();
                 else if(e.getCode() == KeyCode.R || e.getCode() == KeyCode.S){
+		    
                     arkanoidBoardController.run();
+		    animation.lastTime = System.nanoTime();
+		    animation.start();
+		    
                     messageText.setText("Level "+arkanoidBoard.getNiveauActuel());
-                }else if(e.getCode() == KeyCode.P){
+
+		}else if(e.getCode() == KeyCode.P){
+		    
                     arkanoidBoardController.stop();
                     messageText.setText("Game in Pause\nPress P to resume");
-                }else if(e.getCode() == KeyCode.ESCAPE){
+
+		}else if(e.getCode() == KeyCode.ESCAPE){
                     //Quitter l'application
                 }
+		
             }
         });
 
         stage.setScene(scene);
         stage.setTitle("Arkanoid");
         stage.show();
+
+	this.animation = new MyAnimationTimer();
+	
     }
 
     class MyAnimationTimer extends AnimationTimer{
         public long lastTime = System.nanoTime();
         public void handle(long time){
 
-            System.out.println(time-lastTime);
+	    if(!arkanoidBoard.getRunning()){
+		this.stop();
+		return;
+	    }
 
             if(arkanoidBoard.endOfLevel()){
-                if(arkanoidBoard.getLooser())
-                    messageText.setText("Vous avez perdu ! Level "+arkanoidBoard.getNiveauActuel());
-                else
-                    messageText.setText("Vous avez gagne ! Level "+arkanoidBoard.getNiveauActuel());
+	      if(arkanoidBoard.getLooser())
+	          messageText.setText("Vous avez perdu ! Level "+arkanoidBoard.getNiveauActuel());
+	      else
+	          messageText.setText("Vous avez gagne ! Level "+arkanoidBoard.getNiveauActuel());
+	    
+	    	this.stop();
+	    	return;
             }
-
-            if(!arkanoidBoard.getRunning())
-                this.stop();
 
             arkanoidBoardController.arkanoidAnimation(time,lastTime);
             lastTime=time;

@@ -13,7 +13,7 @@ public class Niveau {
 		briques=new ArrayList<Brique>();
 	}
 
-	public boolean chargement(String path){ //chemin du fichier niveau.txt
+	public boolean chargement(String path){ //chemin du fichier niveau1
 		this.briques.clear();
 		try{
 			InputStream ips= new FileInputStream(path);

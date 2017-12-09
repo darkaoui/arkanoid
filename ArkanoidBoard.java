@@ -27,11 +27,13 @@ public class ArkanoidBoard extends Pane{
 		this.briques = new ArrayList<Brique>();
 
 		this.cadre    =  new Cadre(0,0,300,400);
-		this.raquette =  new Raquette(150-50/2,380,50,10);
+		this.raquette =  new Raquette(150-60/2,380,60,10,8);
 		this.balle    =  new Balle(300,400,8);
 
+		
+
 		this.balle.setXMove(200E-9);
-		this.balle.setYMove(120E-9);
+		this.balle.setYMove(-120E-9);
 
 		this.setX(0);
 		this.setY(0);
@@ -142,10 +144,10 @@ public class ArkanoidBoard extends Pane{
 		this.briques.clear();
 
 		//position initiale de la raquette
-		this.raquette.setX((this.raquette.getWidth()/2)+ this.cadre.getWidth()/2);
+		this.raquette.setX((this.cadre.getWidth()/2-this.raquette.getWidth()/2));
 
 		//position initiale de la balle
-		this.balle.setX((this.raquette.getX()+this.raquette.getWidth())/2);
+		this.balle.setX((this.cadre.getWidth())/2);
 		this.balle.setY(this.raquette.getY()-this.balle.getRadius());
 
 		if(!chargeurNiveau.chargement("Niveaux/niveau"+niveau))
@@ -162,7 +164,7 @@ public class ArkanoidBoard extends Pane{
 			this.briques.get(i).setX(this.briques.get(i).getX()+x);
 		}
 
-		this.getChildren().addAll(briques);
+                this.getChildren().addAll(briques);
 		this.getChildren().add(this.balle);
 
 		return true;

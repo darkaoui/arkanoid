@@ -1,15 +1,14 @@
 import javafx.scene.shape.Rectangle;
 import javafx.animation.AnimationTimer;
+import javafx.scene.paint.Color;
 
 class ArkanoidBoardController{
 
     public ArkanoidBoard arkanoidBoard;
     private long lapstime;
-    private AnimationTimer animation;
 
-    public ArkanoidBoardController(ArkanoidBoard arkanoidBoard, AnimationTimer animation){
+    public ArkanoidBoardController(ArkanoidBoard arkanoidBoard){
         this.arkanoidBoard = arkanoidBoard;
-        this.animation     = animation;
     }
 
     public void arkanoidAnimation(long time, long lastTime){
@@ -36,12 +35,10 @@ class ArkanoidBoardController{
 
     public void run(){
         this.arkanoidBoard.setRunning(true);
-        this.animation.start();
     }
 
     public void stop(){
         this.arkanoidBoard.setRunning(false);
-        this.animation.stop();
     }
 
     public boolean loadingLevel(int level){
@@ -49,24 +46,36 @@ class ArkanoidBoardController{
             return false;
 
         this.arkanoidBoard.setNiveauActuel(level);
-        return false;
+	
+        return true;
     }
 
     public void pushLeftKey(){
-        double x = this.arkanoidBoard.getRaquette().getX();
+
+	double x = this.arkanoidBoard.getRaquette().getX();
         x-= this.arkanoidBoard.getRaquette().getMoveConstant();
 
         if(x > this.arkanoidBoard.getCadre().getX())
-            this.arkanoidBoard.getRaquette().setX(x);
+	  this.arkanoidBoard.getRaquette().setX(x);
+	else
+	    this.arkanoidBoard.getRaquette().setX(this.arkanoidBoard.getCadre().getX()+0.1);
     }
 
     public void pushRightKey(){
-        double x = this.arkanoidBoard.getRaquette().getX();
+
+	double x = this.arkanoidBoard.getRaquette().getX();
         double w = this.arkanoidBoard.getRaquette().getWidth();
+
+	double xR = this.arkanoidBoard.getCadre().getX();
+	double wR =  this.arkanoidBoard.getCadre().getWidth();
+	
         x+= this.arkanoidBoard.getRaquette().getMoveConstant();
 
-        if((x+w) > this.arkanoidBoard.getCadre().getX())
-            this.arkanoidBoard.getRaquette().setX(x);
+	
+        if((x+w) < (xR+wR))
+	  this.arkanoidBoard.getRaquette().setX(x);
+	else
+	    this.arkanoidBoard.getRaquette().setX( xR+wR+-w-0.1);
     }
 
     private boolean collision(Balle balle, Rectangle object, double xB, double yB){
@@ -83,8 +92,16 @@ class ArkanoidBoardController{
                 return true;
             }
 
-            if(yB-balle.getRadius() <= y || yB+balle.getRadius() >= (y+h)){
+            if(yB-balle.getRadius() <= y){
                 balle.setYMove(-balle.getYMove());
+                return true;
+            }
+
+	    if(yB+balle.getRadius() >= (y+h)){
+		
+                this.arkanoidBoard.getBalle().setDestroyed(true);
+		this.arkanoidBoard.getBalle().setFill(Color.RED);
+		
                 return true;
             }
 
