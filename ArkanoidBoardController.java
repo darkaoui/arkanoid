@@ -1,3 +1,5 @@
+
+
 import javafx.scene.shape.Rectangle;
 import javafx.animation.AnimationTimer;
 import javafx.scene.paint.Color;
@@ -16,10 +18,11 @@ class ArkanoidBoardController{
         long lapstime = time-lastTime;
 
         Balle balle = this.arkanoidBoard.getBalle();
-        double xB = balle.getX()+balle.getXMove()*lapstime;
-        double yB = balle.getY()+balle.getYMove()*lapstime;
+	
+        double xBalleNew = balle.getX()+balle.getXMove()*lapstime;
+        double yBalleNew = balle.getY()+balle.getYMove()*lapstime;
 
-        if(this.collision(this.arkanoidBoard.getBalle(),this.arkanoidBoard.getCadre(),xB,yB)){
+        if(this.collision(this.arkanoidBoard.getBalle(),this.arkanoidBoard.getCadre(),xBalleNew,yBalleNew)){
             //verifier si le ballle a explose
             return;
         }
@@ -29,8 +32,8 @@ class ArkanoidBoardController{
 
         //Verifier
 
-        balle.setX(xB);
-        balle.setY(yB);
+        balle.setX(xBalleNew);
+        balle.setY(yBalleNew);
     }
 
     public void run(){
@@ -99,6 +102,7 @@ class ArkanoidBoardController{
 
 	    if(yB+balle.getRadius() >= (y+h)){
 		
+		balle.setYMove(-balle.getYMove());
                 this.arkanoidBoard.getBalle().setDestroyed(true);
 		this.arkanoidBoard.getBalle().setFill(Color.RED);
 		

@@ -15,10 +15,11 @@ public class ArkanoidBoard extends Pane{
 
 	private boolean looser;
 	private boolean endOfLevel;
+        private boolean running;
 
 	private Niveau chargeurNiveau;
 
-	private boolean running;
+	
 
 	public ArkanoidBoard(){
 
@@ -41,8 +42,9 @@ public class ArkanoidBoard extends Pane{
 		this.niveauActuel   = 0;
 		this.nombreDeNiveau = nombreDeNiveau();
 
-		this.looser = false;
-		this.running = false;
+		this.looser     = false;
+		this.running    = false;
+		this.endOfLevel = false;
 
 		this.getChildren().add(cadre);
 		this.getChildren().add(raquette);
@@ -166,6 +168,7 @@ public class ArkanoidBoard extends Pane{
 
                 this.getChildren().addAll(briques);
 		this.getChildren().add(this.balle);
+		this.niveauActuel = niveau;
 
 		return true;
 	}
