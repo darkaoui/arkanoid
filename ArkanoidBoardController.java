@@ -1,5 +1,5 @@
 
-
+import javafx.geometry.Point2D;
 import javafx.scene.shape.Rectangle;
 import javafx.animation.AnimationTimer;
 import javafx.scene.paint.Color;
@@ -29,11 +29,16 @@ class ArkanoidBoardController{
 
 	if(this.collision(this.arkanoidBoard.getBalle(),this.arkanoidBoard.getRaquette(),xBalleNew,yBalleNew)){
 	    //Traitement
-	    return;
+	  return;
 	}
 
+	for(int i=0; i<this.arkanoidBoard.getBriques().size();i++){
+	    if(this.collision(this.arkanoidBoard.getBalle(),this.arkanoidBoard.getBriques().get(i),xBalleNew,yBalleNew)){
+	      //Traitement
+	      //return;
+	    }
+	}
 	
-
         //Verifier si on casse Une brique pour le disparaitre
         //Au cas ou toutes les briques sont brisee fin du jeux
 
@@ -90,78 +95,126 @@ class ArkanoidBoardController{
 
     private boolean collision(Balle balle, Rectangle object, double xB, double yB){
 
-        double x = (object).getX();
-        double y = (object).getY();
-        double w = (object).getWidth();
-        double h = (object).getHeight();
+	Point2D p1 = new Point2D(object.getX(),object.getY());
+	Point2D p2 = new Point2D(object.getX()+object.getWidth(), object.getY()+object.getHeight());
 
-        if(object instanceof Cadre){
+	Point2D pB = new Point2D(xB,yB);
 
-            if(xB-balle.getRadius() <= x || xB+balle.getRadius() >= (x+w)){
-                balle.setXMove(-balle.getXMove());
+	double  rB = balle.getRadius();
+
+	
+	//en fonction du point de contact on calcul la distance puis on compare au rayon de la balle
+	
+	if(object instanceof Cadre){
+	    
+	    if(pB.distance(p1.getX(),pB.getY())<=rB || (pB.distance(p2.getX(),pB.getY())) <= rB ){
+		balle.setXMove(-balle.getXMove());
+		return true;
+	    }
+
+	    if(pB.distance(pB.getX(),p1.getY())<=rB){
+		balle.setYMove(-balle.getYMove());
                 return true;
-            }
+	    }
 
-            if(yB-balle.getRadius() <= y){
-                balle.setYMove(-balle.getYMove());
-                return true;
-            }
+	    if(pB.distance(pB.getX(),p2.getY()) <= rB){
 
-	    if(yB+balle.getRadius() >= (y+h)){
-		
 		balle.setYMove(-balle.getYMove());
                 this.arkanoidBoard.getBalle().setDestroyed(true);
 		this.arkanoidBoard.getBalle().setFill(Color.RED);
 		
                 return true;
-            }
+	    }
 
-            return false;
-        }
+	}
 
-        if(object instanceof Raquette){
+	if(object instanceof Raquette){
 
-	    Raquette r = arkanoidBoard.getRaquette();
-	    double ecart = 2.0; //ecart pour le centre de la raquette
+	    double ecart = 2.0; //grandeur du centre
 
-	    double rB  = balle.getRadius();
-
+	    double centreR   = this.arkanoidBoard.getRaquette().getWidth()/2;
 	    double intensite = Math.sqrt(Math.pow(balle.getXMove(),2)+Math.pow(balle.getYMove(),2));
-	    double centreR = r.getX()+r.getWidth()/2;
+	    
+	    if(pB.distance(pB.getX(),p1.getY()) <= rB && pB.getX() >= p1.getX() && pB.getX() <= p2.getX()){
 
-	    //rebond sur la partie gauche de la raquette
-	    if(yB+rB >= r.getY() && xB >= r.getX()-rB && xB < (centreR - ecart) ){
+		System.out.println("Raquette toucher");
 
+		//A gauche 
+		if(pB.getX() < p1.getX()+centreR-ecart){
+		    balle.setYMove(-intensite*Math.sin(Math.PI/4));
+		    balle.setXMove(-intensite*Math.cos(Math.PI/4));
+		}
+
+		//A droite
+		if(pB.getX() > p1.getX()+centreR + ecart){
+		    balle.setYMove(intensite*Math.sin(-Math.PI/4));
+		    balle.setXMove(intensite*Math.cos(Math.PI/4));
+		}
+
+		return true;
+	    }
+
+	    //les coins de la raquette
+	    if(pB.distance(p1) <= rB){
 		balle.setYMove(-intensite*Math.sin(Math.PI/4));
 		balle.setXMove(-intensite*Math.cos(Math.PI/4));
-		
+
 		return true;
 	    }
 
-	    //rebond sur la partie droite de la raquette
-	    if(yB+rB >= r.getY() && xB > centreR+ecart && xB <= r.getX()+r.getWidth()+rB){
-
+	    if(pB.distance(p2.getX(),p1.getY()) <= rB){
 		balle.setYMove(intensite*Math.sin(-Math.PI/4));
 		balle.setXMove(intensite*Math.cos(Math.PI/4));
-		
+
 		return true;
 	    }
+	    
+	}
 
-	    //rebond au milieu de la raquette
-	    if(yB+rB >= r.getY()  && xB >= centreR-ecart && xB <= centreR+ecart){
-		balle.setXMove(0);
-		balle.setYMove(-intensite);
+	if(object instanceof Brique){
+
+	    boolean col = false;
+
+	    //en haut
+	    if(pB.distance(pB.getX(),p1.getY()) <= rB && pB.getX() >= p1.getX() && pB.getX() <= p2.getX()){
+		balle.setYMove(-balle.getYMove());
+		col = true;
+		System.out.println("Brique toucher");
 	    }
-	    
-            return false;
-        }
 
-        if(object instanceof Brique){
+	    //en bas
+	    if(pB.distance(pB.getX(),p2.getY()) <= rB && pB.getX() >= p1.getX() && pB.getX() <= p2.getX()){
+		balle.setYMove(-balle.getYMove());
+		col = true;
+		System.out.println("Brique toucher");
+	    }
 
-	    
-	    
-            return false;
-        }
+	    //a gauche
+	    if(pB.distance(p1.getX(),pB.getY()) <= rB && pB.getY() >= p1.getY() && pB.getY() <= p2.getY()){
+		balle.setXMove(-balle.getXMove());
+		col = true;
+		System.out.println("Brique toucher");
+	    }
+
+	    //a droite
+	    if(pB.distance(p2.getX(),pB.getY()) <= rB && pB.getY() >= p1.getY() && pB.getY() <= p2.getY()){
+		balle.setXMove(-balle.getXMove());
+		col = true;
+		System.out.println("Brique toucher");
+	    }
+
+	    //les coins
+	    if(pB.distance(p1) <= rB || pB.distance(p2) <= rB ||
+	       pB.distance(p2.getX(),p1.getY()) <= rB || pB.distance(p1.getX(),p2.getY()) <= rB){
+		balle.setYMove(-balle.getYMove());
+		balle.setXMove(-balle.getXMove());
+		col = true;
+		System.out.println("Brique toucher");
+	    }
+
+	    return col;
+	}
+	
 
         return false;
     }
