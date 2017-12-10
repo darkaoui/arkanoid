@@ -27,6 +27,13 @@ class ArkanoidBoardController{
             return;
         }
 
+	if(this.collision(this.arkanoidBoard.getBalle(),this.arkanoidBoard.getRaquette(),xBalleNew,yBalleNew)){
+	    //Traitement
+	    return;
+	}
+
+	
+
         //Verifier si on casse Une brique pour le disparaitre
         //Au cas ou toutes les briques sont brisee fin du jeux
 
@@ -112,17 +119,47 @@ class ArkanoidBoardController{
             return false;
         }
 
-        //Ajouter quand la balle touches le fond elle est detruite
-
         if(object instanceof Raquette){
+
+	    Raquette r = arkanoidBoard.getRaquette();
+	    double ecart = 2.0; //ecart pour le centre de la raquette
+
+	    double rB  = balle.getRadius();
+
+	    double intensite = Math.sqrt(Math.pow(balle.getXMove(),2)+Math.pow(balle.getYMove(),2));
+	    double centreR = r.getX()+r.getWidth()/2;
+
+	    //rebond sur la partie gauche de la raquette
+	    if(yB+rB >= r.getY() && xB >= r.getX()-rB && xB < (centreR - ecart) ){
+
+		balle.setYMove(-intensite*Math.sin(Math.PI/4));
+		balle.setXMove(-intensite*Math.cos(Math.PI/4));
+		
+		return true;
+	    }
+
+	    //rebond sur la partie droite de la raquette
+	    if(yB+rB >= r.getY() && xB > centreR+ecart && xB <= r.getX()+r.getWidth()+rB){
+
+		balle.setYMove(intensite*Math.sin(-Math.PI/4));
+		balle.setXMove(intensite*Math.cos(Math.PI/4));
+		
+		return true;
+	    }
+
+	    //rebond au milieu de la raquette
+	    if(yB+rB >= r.getY()  && xB >= centreR-ecart && xB <= centreR+ecart){
+		balle.setXMove(0);
+		balle.setYMove(-intensite);
+	    }
+	    
             return false;
         }
 
         if(object instanceof Brique){
-            return false;
-        }
 
-        if(object instanceof Cadre){
+	    
+	    
             return false;
         }
 

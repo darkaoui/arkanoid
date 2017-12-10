@@ -29,7 +29,7 @@ public class ArkanoidBoard extends Pane{
 
 		this.cadre    =  new Cadre(0,0,300,400);
 		this.raquette =  new Raquette(150-60/2,380,60,10,8);
-		this.balle    =  new Balle(300,400,8);
+		this.balle    =  new Balle(300,400,7);
 
 		
 
